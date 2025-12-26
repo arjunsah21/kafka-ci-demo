@@ -31,25 +31,12 @@ pipeline {
           docker run -d \
             --name kafka-producer \
             --network $NETWORK \
-            $IMAGE_NAME
+            $IMAGE_NAME \
+            python producer.py
         '''
       }
     }
 
-    // stage('Deploy Consumer') {
-    //   steps {
-    //     sh '''
-    //       docker stop kafka-consumer || true
-    //       docker rm kafka-consumer || true
-
-    //       docker run -d \
-    //         --name kafka-consumer \
-    //         --network $NETWORK \
-    //         $IMAGE_NAME \
-    //         python consumer.py
-    //     '''
-    //   }
-    // }
     stage('Deploy Consumer UI') {
       steps {
         sh '''
@@ -58,9 +45,9 @@ pipeline {
 
           docker run -d \
             --name kafka-consumer \
-            --kafka-net \
+            --network $NETWORK \
             -p 8501:8501 \
-            kafka-python-client
+            $IMAGE_NAME
         '''
       }
     }
