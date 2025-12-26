@@ -58,7 +58,7 @@ pipeline {
 
           docker run -d \
             --name kafka-consumer \
-            --network kafka-ci-demo_kafka-net \
+            --kafka-net \
             -p 8501:8501 \
             kafka-python-client
         '''
