@@ -36,7 +36,21 @@ pipeline {
       }
     }
 
-    stage('Deploy Consumer') {
+    // stage('Deploy Consumer') {
+    //   steps {
+    //     sh '''
+    //       docker stop kafka-consumer || true
+    //       docker rm kafka-consumer || true
+
+    //       docker run -d \
+    //         --name kafka-consumer \
+    //         --network $NETWORK \
+    //         $IMAGE_NAME \
+    //         python consumer.py
+    //     '''
+    //   }
+    // }
+    stage('Deploy Consumer UI') {
       steps {
         sh '''
           docker stop kafka-consumer || true
@@ -44,9 +58,9 @@ pipeline {
 
           docker run -d \
             --name kafka-consumer \
-            --network $NETWORK \
-            $IMAGE_NAME \
-            python consumer.py
+            --network kafka-ci-demo_kafka-net \
+            -p 8501:8501 \
+            kafka-python-client
         '''
       }
     }
